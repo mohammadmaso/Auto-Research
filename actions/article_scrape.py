@@ -1,10 +1,7 @@
+import os
 import PyPDF2
 import docx2txt
-import textract
 from bs4 import BeautifulSoup
-
-FILE_DIR = Path(__file__).parent.parent + "/sources"
-CFG = Config()
 
 
 def extract_text_from_document(file_path):
@@ -50,7 +47,12 @@ def extract_text_from_html(html_path):
         return ""
 
 
-pdf_file_paths = find_pdf_files_in_folder(folder_path)
-for pdf_path in pdf_file_paths:
-    extracted_text = extract_text_from_document(document_path)
-    print(extracted_text)
+
+
+def find_pdf_files_in_folder(folder_path):
+    pdf_files = []
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.lower().endswith(".pdf"):
+                pdf_files.append(os.path.join(root, file))
+    return pdf_files
